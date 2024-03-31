@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -43,5 +44,11 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected function type(): attributes{
+        return new Attribute(
+            get: fn ($value) => ["user", "admin", "cashier"][$value],
+        );
     }
 }

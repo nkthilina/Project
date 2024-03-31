@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminAuthController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,10 +36,18 @@ Route::group(['prefix'=>'admin', 'middleware' => 'redirectAdmin'], function () {
     //Route::get('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 });
 
-// Route::middleware(['auth', 'admin'])->group(function () {
+// Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+});
+
+// end admin routes
+// Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+
+// admin routes new
+// Route::middleware(['auth', 'user-access:admin'])->group(function () {
 //     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 // });
-// end admin routes
-Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+// end admin routes new
 
 require __DIR__.'/auth.php';

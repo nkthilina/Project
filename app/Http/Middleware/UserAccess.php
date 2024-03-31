@@ -6,20 +6,19 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminMiddleware
+class UserAccess
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, $userType): Response
     {
-        if(Auth::check() && Auth::user()->isAdmin() == 1){
+        if(auth()->user()->role == $userType){
             return $next($request);
         }
-        return redirect()->route('home')->with('error','Access is denied. You are not the admin.');
+
+        return response()->json(['You do not have permision to access for this page.']);
     }
-
-
 }

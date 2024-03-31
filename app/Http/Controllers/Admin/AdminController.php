@@ -10,6 +10,7 @@ class AdminController extends Controller
 {
     public function index(){
 
+        //return 'ok';
         return Inertia::render('Admin/Dashboard');
     }
 }
