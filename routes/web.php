@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\TodoController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,6 +18,12 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/todos', [TodoController::class, 'index'])->name('todos.index');
+Route::post('/todos', [TodoController::class, 'store'])->name('todos.store');
+Route::get('/todos/create', [TodoController::class, 'create'])->name('todos.create');
+Route::get('/todos/{todo}/edit', [TodoController::class, 'edit'])->name('todos.edit');
+// Route::put('/todos/{todo}', [TodoController::class, 'update'])->name('todos.update');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -29,17 +36,17 @@ Route::middleware('auth')->group(function () {
 // end user routes
 
 // admin routes
-Route::group(['prefix'=>'admin', 'middleware' => 'redirectAdmin'], function () {
-    Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
-    Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
-    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+// Route::group(['prefix'=>'admin', 'middleware' => 'redirectAdmin'], function () {
+//     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+//     Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
+//     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
     //Route::get('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
-});
+//});
 
 // Route::middleware('auth')->group(function () {
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-});
+// Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+//     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+// });
 
 // end admin routes
 // Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
