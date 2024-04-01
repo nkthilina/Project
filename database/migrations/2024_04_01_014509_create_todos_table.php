@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('image')->nullable();
             $table->integer('age')->nullable();
-            // $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->integer('status')->default(0);
             // $table->boolean('Inactive')->default('Active');
             $table->timestamps();
         });

@@ -46,7 +46,6 @@ class UserController extends Controller
         'image' => $imagePath, // Save the image path to the database
     ]);
 
-    // Redirect the user to the topics index route after successful creation
     return Redirect::route('topics.index');
 }
 

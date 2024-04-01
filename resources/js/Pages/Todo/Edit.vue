@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, useForm, router } from "@inertiajs/vue3";
+import { Inertia } from "@inertiajs/inertia";
 import { onMounted } from "vue";
 import { initFlowbite } from "flowbite";
 
@@ -21,11 +22,11 @@ const props = defineProps({
 
 function updateSubmit() {
     //form.post('/todos')
-    router.post(`/todos/${props.todo.id}`, {
-        _method: "put",
+    Inertia.post(`/todos/${props.todo.id}`, {
+        _method: 'put',
         name: form.name,
         age: form.age,
-        image: form.image,
+        image: form.image
     });
 }
 </script>

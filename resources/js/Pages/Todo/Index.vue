@@ -1,7 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from "@inertiajs/vue3";
-import { Link } from "@inertiajs/vue3";
+import { Head, Link } from "@inertiajs/vue3";
 import { onMounted } from "vue";
 import { initFlowbite } from "flowbite";
 
@@ -11,8 +10,19 @@ onMounted(() => {
 });
 
 const props = defineProps({
-    todos: Array,
-})
+    todos: Array
+});
+
+const deleteTodo = (id) => {
+    axios
+        .delete(`/todos/${id}`)
+        .then((response) => {
+            // Handle success
+        })
+        .catch((error) => {
+            // Handle error
+        });
+};
 </script>
 
 <template>
@@ -56,105 +66,71 @@ const props = defineProps({
                         </thead>
                         <tbody>
                             <tr
-                                v-for="todo in todos" :key="todo.id"
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                            >
-                            <td class="w-4 p-4"></td>
-                                <th
-                                    scope="row"
-                                    class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
-                                >
-                                    <img
-                                        class="w-10 h-10 rounded-full"
-                                        src="/docs/images/people/profile-picture-1.jpg"
-                                        alt="Jese image"
-                                    />
-                                    <div class="ps-3">
-                                        <div class="text-base font-semibold">
-                                            {{todo.name}}
-                                        </div>
-
-                                    </div>
-                                </th>
-                                <td class="px-6 py-4"><img :src="todo.image"/></td>
-                                <td class="px-6 py-4"> {{ todo.age }}</td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-                                        >Active</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <!-- Modal toggle -->
-                                    <Link
-                                        :href="`/todos/${todo.id}/edit`"
-                                        type="button"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                        >Edit user</Link>
-                                    <Link
-                                        :href="route('todos.edit', todo.id)"
-                                        type="button"
-                                        data-modal-target="editUserModal"
-                                        data-modal-show="editUserModal"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                        >Delete user</Link>
-                                    <a href="#" type="button" data-modal-target="editUserModal" data-modal-show="editUserModal" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete user</a>
-                                </td>
-                            </tr>
-                            <tr
+                                v-for="todo in todos"
+                                :key="todo.id"
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                             >
                                 <td class="w-4 p-4"></td>
                                 <th
                                     scope="row"
-                                    class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                    class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
                                 >
-                                    <img
-                                        class="w-10 h-10 rounded-full"
-                                        src="/docs/images/people/profile-picture-3.jpg"
-                                        alt="Jese image"
-                                    />
-                                    <div class="ps-3">
+                                    <div class="">
                                         <div class="text-base font-semibold">
-                                            Bonnie Green
-                                        </div>
-                                        <div class="font-normal text-gray-500">
-                                            bonnie@flowbite.com
+                                            {{ todo.name }}
                                         </div>
                                     </div>
                                 </th>
-                                <td class="px-6 py-4">Image</td>
-                                <td class="px-6 py-4">Designer</td>
                                 <td class="px-6 py-4">
+                                    <img :src="todo.image" />
+                                </td>
+                                <td class="px-6 py-4">{{ todo.age }}</td>
+                                <td class="px-6 py-4">
+                                    <span
+                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                                        >Active</span
+                                    >
                                     <span
                                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-slate-800"
                                         >Inactive</span
                                     >
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 flex space-x-4">
                                     <!-- Modal toggle -->
-                                    <a
-                                        href="#"
+                                    <Link
+                                        :href="`/todos/${todo.id}/edit`"
                                         type="button"
-                                        data-modal-show="editUserModal"
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                        >Edit user</a
+                                        >Edit user</Link
+                                    >
+                                    <Link
+                                        :href="`/todos/${todo.id}/edit`"
+                                        method="delete"
+                                        as="button"
+                                        type="button"
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                        >Delete user</Link
                                     >
                                     <a
                                         href="#"
                                         type="button"
+                                        data-modal-target="editUserModal"
                                         data-modal-show="editUserModal"
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                         >Delete user</a
                                     >
+                                    <button @click="deleteTodo(todo.id)">
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                     <!-- Edit user modal -->
                     <div
-                    id="editUserModal"
-                    tabindex="-1"
-                    aria-hidden="true"
+                        id="editUserModal"
+                        tabindex="-1"
+                        aria-hidden="true"
                         class="fixed top-0 left-0 right-0 z-50 items-center justify-center hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
                     >
                         <div class="relative w-full max-w-2xl max-h-full">
@@ -334,7 +310,6 @@ const props = defineProps({
                         </div>
                     </div>
                     <!-- end Edit user modal -->
-
                 </div>
             </div>
         </div>

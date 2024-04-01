@@ -123,7 +123,7 @@ const showingNavigationDropdown = ref(false);
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('todos.index')" :active="route().current('todos.index')">
-                            To
+                            Todo
                         </ResponsiveNavLink>
                     </div>
 

@@ -69,4 +69,28 @@ class TodoController extends Controller
             'image' => asset('storage/' .$todo->image)
         ]);
     }
+
+    public function update(Todo $todo){
+        $image = $todo->image;
+        if(Request()->hasFile('image')){
+            Storage::delete('public/' .$todo->image);
+            $image = Request()->file('image')->store('todos', 'public');
+        }
+        $todo->update([
+            'name' => Request()->name,
+            'age' => Request()->age,
+            'image' => $image
+        ]);
+        return Redirect::route('todos.index');
+    }
+
+    public function done(Todo $t){
+ 
+    }
+
+    public function destroy(Todo $todo){
+        Storage::delete('public/' .$todo->image);
+        $todo->delete();
+        return Redirect::route('todos.index');
+    }
 }
